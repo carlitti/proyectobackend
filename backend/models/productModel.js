@@ -8,9 +8,10 @@ const createProducto = async (titulo, descripcion, precio, imagen_url, id_vended
     return result.rows[0];
 };
 
-const getProductos = async () => {
-    const result = await pool.query("SELECT * FROM productos");
-    return result.rows;
+const getProductById = async (id) => {
+    const result = await pool.query("SELECT * FROM productos WHERE id = $1", [id]);
+    return result.rows[0];
 };
+
 
 module.exports = { createProducto, getProductos };

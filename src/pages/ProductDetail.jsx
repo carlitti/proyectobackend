@@ -11,6 +11,8 @@ const ProductDetail = () => {
     const [mensaje, setMensaje] = useState("");
 
     useEffect(() => {
+        console.log("📌 ID recibido:", id); // Debug para ver qué ID se está recibiendo
+
         const fetchProduct = async () => {
             const data = await getProductById(id);
             if (data) {
