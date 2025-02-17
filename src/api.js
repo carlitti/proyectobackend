@@ -3,15 +3,20 @@ const API_URL = "https://backendproyecto-x917.onrender.com/api";
 
 export const fetchProductos = async () => {
     try {
-        const response = await fetch(`${API_URL}/publicaciones`);
+        const response = await fetch(`${API_URL}/productos`);
+        console.log("Respuesta del servidor:", response); // Agregar log para depurar
+
         if (!response.ok) throw new Error("Error al obtener productos");
-        return await response.json();
+
+        const data = await response.json();
+        console.log("Productos obtenidos:", data); // Agregar log para ver los productos
+
+        return data;
     } catch (error) {
         console.error("Error en fetchProductos:", error);
         return [];
     }
 };
-
 
 export const getProductById = async (id) => {
     try {
