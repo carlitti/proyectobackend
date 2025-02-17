@@ -1,11 +1,8 @@
 const API_URL = "https://backendproyecto-x917.onrender.com/api";
 
-
 export const fetchProductos = async () => {
     try {
         const response = await fetch(`${API_URL}/productos`);
-        console.log("Respuesta del servidor:", response); // Agregar log para depurar
-
         if (!response.ok) throw new Error("Error al obtener productos");
 
         const data = await response.json();
@@ -20,7 +17,7 @@ export const fetchProductos = async () => {
 
 export const getProductById = async (id) => {
     try {
-        const response = await fetch(`${API_URL}/publicaciones/${id}`);
+        const response = await fetch(`${API_URL}/productos/${id}`);
         if (!response.ok) throw new Error("Error al obtener producto");
         return await response.json();
     } catch (error) {
@@ -38,17 +35,19 @@ export const loginUser = async (credentials) => {
         });
 
         if (!response.ok) throw new Error("Error en el login");
-        return await response.json();
+
+        const data = await response.json();
+        return data;
     } catch (error) {
         console.error("Error en loginUser:", error);
         return { message: "Error en el servidor" };
     }
 };
 
-
 export const addProducto = async (productoData) => {
     try {
-        const response = await fetch(`${API_URL}/publicaciones`, {
+        // ✅ FIX: Cambiar "publicaciones" por "productos"
+        const response = await fetch(`${API_URL}/productos`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(productoData),
@@ -62,7 +61,6 @@ export const addProducto = async (productoData) => {
     }
 };
 
-
 export const registerUser = async (userData) => {
     try {
         const response = await fetch(`${API_URL}/auth/register`, {
@@ -71,7 +69,7 @@ export const registerUser = async (userData) => {
             body: JSON.stringify(userData),
         });
 
-        if (!response.ok) throw new Error("Error en la petición");
+        if (!response.ok) throw new Error("Error en el registro");
         return await response.json();
     } catch (error) {
         console.error("Error en el registro:", error);

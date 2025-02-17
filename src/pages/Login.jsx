@@ -13,16 +13,16 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = await loginUser({ email, password });
-
+    
         if (data.token) {
-            login({ nombre: data.user.nombre, email: data.user.email });
+            login({ nombre: data.nombre, email });
             alert("Login exitoso");
             navigate("/");
         } else {
             setError(data.message || "Error al iniciar sesión");
         }
     };
-
+    
     return (
         <div className="container mt-5">
             <h1>Iniciar Sesión</h1>

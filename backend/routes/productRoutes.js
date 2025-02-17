@@ -16,21 +16,20 @@ router.get("/", async (req, res) => {
 
 
 router.post("/", authMiddleware, async (req, res) => {
-    console.log("📌 Usuario autenticado:", req.user); // 🔥 Debug
+    console.log("📌 Usuario autenticado:", req.user);
     try {
         const { titulo, descripcion, precio, imagen_url } = req.body;
-        const id_vendedor = req.user.id;
+        const id_vendedor = req.user.id; // Obtenemos el usuario autenticado
 
-        if (req.user.rol !== "vendedor") {
-            return res.status(403).json({ error: "Solo los vendedores pueden crear productos" });
-        }
-
+        // ❌ Eliminamos la verificación de "vendedor" porque ya no hay roles.
         const producto = await createProducto(titulo, descripcion, precio, imagen_url, id_vendedor);
-        res.status(201).json(producto);
+        res.status(201).json({ message: "Producto agregado", producto });
     } catch (error) {
+        console.error("❌ Error al crear el producto:", error);
         res.status(500).json({ error: "Error al crear el producto" });
     }
 });
+
 
 
 

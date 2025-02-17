@@ -11,9 +11,10 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
+        // ✅ Eliminamos "rol" ya que no se usa en el backend.
         const data = await registerUser({ nombre, email, password });
-
+    
         if (data.message === "Usuario registrado con éxito") {
             alert("Registro exitoso, ahora puedes iniciar sesión.");
             navigate("/login");
