@@ -7,14 +7,14 @@ require("dotenv").config();
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
-    const { nombre, email, password, rol } = req.body;
-    console.log("📌 Datos recibidos en registro:", req.body); // 🔥 Debug
+    let { nombre, email, password } = req.body; // 👈 Eliminamos "rol"
 
     try {
         const userExists = await getUserByEmail(email);
         if (userExists) return res.status(400).json({ error: "El usuario ya existe" });
 
-        const newUser = await createUser(nombre, email, password, rol);
+        // ✅ Eliminamos "rol" porque ya no se usa
+        const newUser = await createUser(nombre, email, password);
         res.status(201).json({ message: "Usuario registrado con éxito" });
     } catch (error) {
         console.error("❌ Error en el registro:", error);
