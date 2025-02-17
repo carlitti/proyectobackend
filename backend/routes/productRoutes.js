@@ -1,9 +1,22 @@
 const express = require("express");
-const { createProducto, getProductos } = require("../models/productModel");
+const { createProducto, getProductos, getProductById } = require("../models/productModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
+
+router.get("/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const producto = await getProductById(id); // 🔥 Ahora está definido
+        if (!producto) return res.status(404).json({ error: "Producto no encontrado" });
+
+        res.json(producto);
+    } catch (error) {
+        console.error("❌ Error al obtener producto:", error);
+        res.status(500).json({ error: "Error al obtener producto" });
+    }
+});
 
 router.get("/", async (req, res) => {
     try {
@@ -12,19 +25,6 @@ router.get("/", async (req, res) => {
     } catch (error) {
         console.error("❌ Error al obtener productos:", error);
         res.status(500).json({ error: "Error al obtener productos" });
-    }
-});
-
-router.get("/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-        const producto = await getProductById(id);
-        if (!producto) return res.status(404).json({ error: "Producto no encontrado" });
-
-        res.json(producto);
-    } catch (error) {
-        console.error("❌ Error al obtener producto:", error);
-        res.status(500).json({ error: "Error al obtener producto" });
     }
 });
 

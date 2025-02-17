@@ -14,4 +14,9 @@ const getProductos = async () => {
     return result.rows;
 };
 
-module.exports = { createProducto, getProductos }; // ✅ Ahora sí está definido
+const getProductById = async (id) => {
+    const result = await pool.query("SELECT * FROM productos WHERE id = $1", [id]);
+    return result.rows[0]; // Devuelve el primer producto encontrado o undefined si no existe
+};
+
+module.exports = { createProducto, getProductos, getProductById }; // 🔥 Agregar getProductById aquí
