@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://backendproyecto-x917.onrender.com/api";
 
 
 export const fetchProductos = async () => {
