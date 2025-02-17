@@ -5,6 +5,16 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
 
 
+router.get("/", async (req, res) => {
+    try {
+        const productos = await getProductos();
+        res.json(productos);
+    } catch (error) {
+        console.error("❌ Error al obtener productos:", error);
+        res.status(500).json({ error: "Error al obtener productos" });
+    }
+});
+
 router.get("/:id", async (req, res) => {
     try {
         const { id } = req.params;
@@ -17,7 +27,6 @@ router.get("/:id", async (req, res) => {
         res.status(500).json({ error: "Error al obtener producto" });
     }
 });
-
 
 router.post("/", authMiddleware, async (req, res) => {
     console.log("📌 Usuario autenticado:", req.user);
