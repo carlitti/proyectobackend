@@ -85,5 +85,5 @@ export const registerUser = async (userData) => {
     }
 };
 
-// ✅ Asegurar que todas las funciones sean exportadas correctamente
-export { fetchProductos, getProductById, loginUser, addProducto, registerUser };
+// ✅ Exportamos solo las funciones que no fueron exportadas directamente antes
+export { getProductById, loginUser, addProducto, registerUser };
