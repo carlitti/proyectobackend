@@ -4,6 +4,7 @@ import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
     const { user, logout } = useAuth();
+    console.log("🔍 Usuario en Navbar:", user);
     const { cart } = useCart();
 
     return (

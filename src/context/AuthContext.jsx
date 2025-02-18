@@ -9,6 +9,8 @@ export const AuthProvider = ({ children }) => {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
             setUser(JSON.parse(storedUser));
+        } else {
+            setUser(null); // Asegurar que no haya residuos de datos
         }
     }, []);
 
@@ -17,7 +19,8 @@ export const AuthProvider = ({ children }) => {
             console.error("❌ No hay token en el login");
             return;
         }
-
+        
+        console.log("📌 Guardando usuario en localStorage:", userData);
         setUser(userData);
         localStorage.setItem("user", JSON.stringify(userData)); 
     };
