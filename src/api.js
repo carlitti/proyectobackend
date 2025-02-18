@@ -44,19 +44,27 @@ export const loginUser = async (credentials) => {
     }
 };
 
-export const addProducto = async (productoData) => {
+export const addProducto = async (productoData, token) => {
     try {
-        // ✅ FIX: Cambiar "publicaciones" por "productos"
+        console.log("📌 Enviando producto:", productoData); // ✅ Verifica que los datos se envían correctamente
+
         const response = await fetch(`${API_URL}/productos`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}` // ✅ Se asegura de enviar el token
+            },
             body: JSON.stringify(productoData),
         });
 
-        if (!response.ok) throw new Error("Error al agregar producto");
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || "Error al agregar producto");
+        }
+
         return await response.json();
     } catch (error) {
-        console.error("Error al agregar producto:", error);
+        console.error("❌ Error al agregar producto:", error);
         return { message: "Error en el servidor" };
     }
 };

@@ -1,37 +1,43 @@
 import { useState } from "react";
 import { addProducto } from "/src/api";
-import "./../styles/AddProduct.css"; // Importa estilos
+import { useAuth } from "/src/context/AuthContext"; // ✅ Para obtener el token
 
 const AddProduct = () => {
     const [titulo, setTitulo] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [precio, setPrecio] = useState("");
     const [imagen_url, setImagenUrl] = useState("");
-    const [tipo, setTipo] = useState("Avión"); // 🔥 Nuevo estado para seleccionar el tipo
+    const [tipo, setTipo] = useState("Avión"); 
+    const { user } = useAuth(); // ✅ Obtener el usuario autenticado y el token
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
+        if (!user?.token) {
+            alert("Debes iniciar sesión para agregar un producto.");
+            return;
+        }
+
         const nuevoProducto = {
             titulo,
+            descripcion,
             precio,
             imagen_url,
-            descripcion,
-            tipo // ✅ Enviar tipo al backend
+            tipo
         };
-    
-        const response = await addProducto(nuevoProducto);
-    
-        if (response.message === "Producto agregado") {
+
+        const response = await addProducto(nuevoProducto, user.token);
+
+        if (response.message === "Producto agregado con éxito") {
             alert("Producto agregado con éxito");
             window.location.href = "/";
         } else {
-            alert("Error al agregar el producto");
+            alert(response.error || "Error al agregar el producto");
         }
     };
 
     return (
-        <div className="add-product-container">
+        <div className="container mt-5">
             <h1>Añadir Producto</h1>
             <form onSubmit={handleSubmit}>
                 <input type="text" placeholder="Título" value={titulo} onChange={(e) => setTitulo(e.target.value)} required />
@@ -39,7 +45,6 @@ const AddProduct = () => {
                 <input type="number" placeholder="Precio" value={precio} onChange={(e) => setPrecio(e.target.value)} required />
                 <input type="text" placeholder="URL de la imagen" value={imagen_url} onChange={(e) => setImagenUrl(e.target.value)} required />
                 
-                {/* Nuevo select para elegir tipo de producto */}
                 <select value={tipo} onChange={(e) => setTipo(e.target.value)} className="form-control">
                     <option value="Avión">✈️ Avión</option>
                     <option value="Helicóptero">🚁 Helicóptero</option>
@@ -52,5 +57,6 @@ const AddProduct = () => {
 };
 
 export default AddProduct;
+
 
 

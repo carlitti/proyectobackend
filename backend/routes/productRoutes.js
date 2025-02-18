@@ -29,14 +29,23 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", authMiddleware, async (req, res) => {
-    console.log("📌 Usuario autenticado:", req.user);
+    console.log("📌 Headers recibidos:", req.headers.authorization); // ✅ Verifica si el token está llegando
+    console.log("📌 Datos recibidos:", req.body); // ✅ Verifica los datos
+
     try {
         const { titulo, descripcion, precio, imagen_url } = req.body;
-        const id_vendedor = req.user.id; // Obtenemos el usuario autenticado
+        const id_vendedor = req.user.id; // ❌ Aquí puede estar fallando
 
-        // ❌ Eliminamos la verificación de "vendedor" porque ya no hay roles.
+        if (!id_vendedor) {
+            return res.status(401).json({ error: "Usuario no autenticado" });
+        }
+
+        if (!titulo || !descripcion || !precio || !imagen_url) {
+            return res.status(400).json({ error: "Todos los campos son obligatorios" });
+        }
+
         const producto = await createProducto(titulo, descripcion, precio, imagen_url, id_vendedor);
-        res.status(201).json({ message: "Producto agregado", producto });
+        res.status(201).json({ message: "Producto agregado con éxito", producto });
     } catch (error) {
         console.error("❌ Error al crear el producto:", error);
         res.status(500).json({ error: "Error al crear el producto" });
