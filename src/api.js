@@ -6,7 +6,7 @@ export const fetchProductos = async () => {
         if (!response.ok) throw new Error("Error al obtener productos");
 
         const data = await response.json();
-        console.log("Productos obtenidos:", data);
+        console.log("Productos obtenidos:", data); // Agregar log para ver los productos
 
         return data;
     } catch (error) {
@@ -46,13 +46,13 @@ export const loginUser = async (credentials) => {
 
 export const addProducto = async (productoData, token) => {
     try {
-        console.log("📌 Enviando producto:", productoData);
+        console.log("📌 Enviando producto:", productoData); // ✅ Verifica que los datos se envían correctamente
 
         const response = await fetch(`${API_URL}/productos`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${token}` // ✅ Se asegura de enviar el token
             },
             body: JSON.stringify(productoData),
         });
@@ -85,5 +85,7 @@ export const registerUser = async (userData) => {
     }
 };
 
-// ✅ Exportar correctamente solo una vez
+// ✅ Asegurar que todas las funciones sean exportadas correctamente
+// ❌ Elimina cualquier export duplicado en este archivo
 export { fetchProductos, getProductById, loginUser, addProducto, registerUser };
+
