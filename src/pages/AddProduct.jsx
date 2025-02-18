@@ -13,8 +13,8 @@ const AddProduct = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!user?.token) {
-            alert("Debes iniciar sesión para agregar un producto.");
+        if (!user || !user.token) {
+            alert("❌ Debes iniciar sesión para agregar un producto.");
             return;
         }
 
@@ -26,10 +26,12 @@ const AddProduct = () => {
             tipo
         };
 
+        console.log("📌 Enviando producto con token:", user.token); // ✅ Log para verificar el token antes de enviar
+
         const response = await addProducto(nuevoProducto, user.token);
 
-        if (response.message === "Producto agregado con éxito") {
-            alert("Producto agregado con éxito");
+        if (response.message === "Producto agregado") {
+            alert("✅ Producto agregado con éxito");
             window.location.href = "/";
         } else {
             alert(response.error || "Error al agregar el producto");

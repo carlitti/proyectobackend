@@ -5,7 +5,6 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
- 
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
@@ -14,6 +13,11 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = (userData) => {
+        if (!userData.token) {
+            console.error("❌ No hay token en el login");
+            return;
+        }
+
         setUser(userData);
         localStorage.setItem("user", JSON.stringify(userData)); 
     };
