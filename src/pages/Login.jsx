@@ -13,16 +13,22 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = await loginUser({ email, password });
-    
+
         if (data.token) {
-            login({ nombre: data.nombre, email });
-            alert("Login exitoso");
+            const userData = {
+                nombre: data.nombre,
+                email,
+                token: data.token // ✅ Aseguramos que el token se guarda
+            };
+            login(userData);
+            localStorage.setItem("user", JSON.stringify(userData)); // ✅ Guardar en localStorage
+            alert("✅ Login exitoso");
             navigate("/");
         } else {
-            setError(data.message || "Error al iniciar sesión");
+            setError(data.message || "❌ Error al iniciar sesión");
         }
     };
-    
+
     return (
         <div className="container mt-5">
             <h1>Iniciar Sesión</h1>

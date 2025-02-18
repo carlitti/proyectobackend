@@ -14,9 +14,9 @@ const Navbar = () => {
 
             <div>
                 <Link className="btn btn-light me-2" to="/">🏠 Home</Link>
-                
-                {/* 🔥 Verificamos si user existe antes de mostrar "Añadir Producto" */}
-                {user ? (
+
+                {/* 🔥 Verificamos si user existe y tiene token antes de mostrar "Añadir Producto" */}
+                {user && user.token ? (
                     <>
                         <Link className="btn btn-secondary me-2" to="/add-product">
                             ➕ Añadir Producto
@@ -39,5 +39,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
 
