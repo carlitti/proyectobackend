@@ -12,25 +12,23 @@ const Home = () => {
 
     useEffect(() => {
         const fetchProducts = async () => {
-            const data = await fetchProductos();
-            console.log("Productos recibidos:", data);
-            setProductos(data);
+            try {
+                const data = await fetchProductos();
+                console.log("Productos recibidos:", data);
+                setProductos(data);
+            } catch (error) {
+                console.error("❌ Error al obtener productos:", error);
+            }
         };
 
         fetchProducts();
-    }, []);
+    }, []); // 🚀 No depende del usuario, así que se ejecuta siempre
 
     const productosFiltrados = productos
         .filter(producto => {
             if (!producto.titulo) return false;
-
-      
-            const coincideBusqueda = producto.titulo.toLowerCase().includes(filtroBusqueda.toLowerCase());
-
- 
-            const coincideTipo = !filtroTipo || filtroTipo === "Todos" || producto.tipo === filtroTipo;
-
-            return coincideBusqueda && coincideTipo;
+            return producto.titulo.toLowerCase().includes(filtroBusqueda.toLowerCase()) &&
+                   (!filtroTipo || filtroTipo === "Todos" || producto.tipo === filtroTipo);
         })
         .sort((a, b) => {
             if (ordenPrecio === "mayor") return b.precio - a.precio;
@@ -42,7 +40,6 @@ const Home = () => {
         <div className="container mt-5">
             <h1 className="text-center fw-bold">🛩️ Descubre productos increíbles</h1>
             <p className="text-center text-muted">Compra y vende aviones y helicópteros exclusivos.</p>
-
 
             <div className="d-flex justify-content-between mb-4">
                 <input
@@ -66,7 +63,6 @@ const Home = () => {
                 </select>
             </div>
 
-            {/* 📌 Productos */}
             <div className="row mt-4">
                 {productosFiltrados.length > 0 ? (
                     productosFiltrados.map((producto) => (
@@ -94,28 +90,6 @@ const Home = () => {
                 ) : (
                     <p className="text-center text-muted">❌ No se encontraron productos con esos criterios.</p>
                 )}
-            </div>
-
-  
-            <div className="how-it-works mt-5">
-                <h2>🛒 ¿Cómo Comprar?</h2>
-                <div className="how-it-works-container d-flex justify-content-between">
-                    <div className="how-step text-center">
-                        <span className="icon">🔍</span>
-                        <h3>Explora</h3>
-                        <p>Descubre una variedad de aviones y helicópteros únicos.</p>
-                    </div>
-                    <div className="how-step text-center">
-                        <span className="icon">📝</span>
-                        <h3>Revisa los detalles</h3>
-                        <p>Verifica la descripción, características y precio del producto.</p>
-                    </div>
-                    <div className="how-step text-center">
-                        <span className="icon">💳</span>
-                        <h3>Compra</h3>
-                        <p>Realiza la compra de manera segura con nuestro sistema de pagos.</p>
-                    </div>
-                </div>
             </div>
         </div>
     );

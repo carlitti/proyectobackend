@@ -6,7 +6,7 @@ const Navbar = () => {
     const { user, logout } = useAuth();
     const { cart } = useCart();
 
-    console.log("🛑 Estado actual del usuario:", user); // <-- 🔥 DEBUG
+    console.log("🛑 Estado actual del usuario:", user);
 
     return (
         <nav className="navbar navbar-dark px-3">
@@ -15,8 +15,8 @@ const Navbar = () => {
             <div>
                 <Link className="btn btn-light me-2" to="/">🏠 Home</Link>
 
-                {/* 🔥 Verificamos si user existe y tiene token antes de mostrar "Añadir Producto" */}
-                {user && user.token ? (
+                {/* Solo mostrar si hay un usuario logeado con token */}
+                {user?.token ? (
                     <>
                         <Link className="btn btn-secondary me-2" to="/add-product">
                             ➕ Añadir Producto
@@ -39,4 +39,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 

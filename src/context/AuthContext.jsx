@@ -8,26 +8,30 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
-            setUser(JSON.parse(storedUser));
-        } else {
-            setUser(null); // Asegurar que no haya residuos de datos
+            try {
+                setUser(JSON.parse(storedUser));
+            } catch (error) {
+                console.error("❌ Error al cargar usuario desde localStorage:", error);
+                setUser(null);
+            }
         }
     }, []);
 
     const login = (userData) => {
-        if (!userData.token) {
+        if (!userData || !userData.token) {
             console.error("❌ No hay token en el login");
             return;
         }
-        
-        console.log("📌 Guardando usuario en localStorage:", userData);
+
+        console.log("📌 Usuario autenticado:", userData);
         setUser(userData);
-        localStorage.setItem("user", JSON.stringify(userData)); 
+        localStorage.setItem("user", JSON.stringify(userData));
     };
 
     const logout = () => {
+        console.log("🚪 Cerrando sesión...");
         setUser(null);
-        localStorage.removeItem("user"); 
+        localStorage.removeItem("user");
     };
 
     return (
